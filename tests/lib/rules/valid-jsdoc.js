@@ -416,6 +416,36 @@ ruleTester.run("valid-jsdoc", rule, {
             }]
         },
         {
+            code:
+            "/**\n" +
+            "* Foo\n" +
+            "* @param {Array.<{id: number, votes: number}>} hi - desc\n" +
+            "* @returns {Array.<{summary: string}>} desc\n" +
+            "*/\n" +
+            "function foo(hi){}",
+            options: [{
+                preferType: {
+                    "Number": "number",
+                    "String": "string"
+                }
+            }]
+        },
+        {
+            code:
+            "/**\n" +
+            "* Foo\n" +
+            "* @param {Array.<[string, number]>} hi - desc\n" +
+            "* @returns {Array.<[string, string]>} desc\n" +
+            "*/\n" +
+            "function foo(hi){}",
+            options: [{
+                preferType: {
+                    "Number": "number",
+                    "String": "string"
+                }
+            }]
+        },
+        {
             code: "/**\n* Description\n* @param {string} a bar\n* @returns {string} desc */\nfunction foo(a = 1){}",
             parserOptions: {
                 ecmaVersion: 6
@@ -1009,6 +1039,68 @@ ruleTester.run("valid-jsdoc", rule, {
                 }
             }],
             errors: [
+                {
+                    message: "Use 'string' instead of 'String'.",
+                    type: "Block"
+                }
+            ]
+        },
+        {
+            code:
+            "/**\n" +
+            "* Foo\n" +
+            "* @param {Array.<{id: Number, votes: Number}>} hi - desc\n" +
+            "* @returns {Array.<{summary: String}>} desc\n" +
+            "*/\n" +
+            "function foo(hi){}",
+            options: [{
+                preferType: {
+                    "Number": "number",
+                    "String": "string"
+                }
+            }],
+            errors: [
+                {
+                    message: "Use 'number' instead of 'Number'.",
+                    type: "Block"
+                },
+                {
+                    message: "Use 'number' instead of 'Number'.",
+                    type: "Block"
+                },
+                {
+                    message: "Use 'string' instead of 'String'.",
+                    type: "Block"
+                }
+            ]
+        },
+        {
+            code:
+            "/**\n" +
+            "* Foo\n" +
+            "* @param {Array.<[String, Number]>} hi - desc\n" +
+            "* @returns {Array.<[String, String]>} desc\n" +
+            "*/\n" +
+            "function foo(hi){}",
+            options: [{
+                preferType: {
+                    "Number": "number",
+                    "String": "string"
+                }
+            }],
+            errors: [
+                {
+                    message: "Use 'string' instead of 'String'.",
+                    type: "Block"
+                },
+                {
+                    message: "Use 'number' instead of 'Number'.",
+                    type: "Block"
+                },
+                {
+                    message: "Use 'string' instead of 'String'.",
+                    type: "Block"
+                },
                 {
                     message: "Use 'string' instead of 'String'.",
                     type: "Block"
